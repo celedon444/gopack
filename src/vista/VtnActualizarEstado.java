@@ -21,26 +21,17 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
      */
     public VtnActualizarEstado() {
         initComponents();
-        // Combo de estados
-        cbNuevoEstado.setModel(
-                new javax.swing.DefaultComboBoxModel<>(
-                        new String[]{
-                            "Seleccionar...",
-                            "En Bodega",
-                            "En Despacho",
-                            "En Ruta",
-                            "Entregado"
-                        }
-                )
-        );
-
-
-         limpiarCampos();
+    cbNuevaCiudad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{ "Digite una guía primero..." }));
+    cbNuevoEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{ "Seleccionar...", "En Bodega", "En Despacho", "En Ruta", "Entregado" }));
+    limpiarCampos();
     }
 
     private void limpiarCampos() {
-        txtGuia.setText("");
-        cbNuevoEstado.setSelectedIndex(0);
+    txtGuia.setText("");
+    cbNuevoEstado.setSelectedIndex(0);
+    cbNuevaCiudad.removeAllItems();
+    cbNuevaCiudad.addItem("Digite una guía primero...");
+        
     }
 
     /**
@@ -60,6 +51,8 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cbNuevaCiudad = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -97,59 +90,76 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
 
         jLabel12.setText("© 2026 GoPack | Todos los derechos reservados");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("Ubicaion Actual");
+
+        cbNuevaCiudad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(336, 336, 336))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel12)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(305, 305, 305)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(285, 285, 285))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(199, 199, 199)
-                        .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(221, 221, 221))
+                        .addComponent(jLabel1)
+                        .addGap(336, 336, 336))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnActualizar)
-                        .addGap(296, 296, 296))))
+                        .addGap(104, 104, 104))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel12))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(130, 130, 130)
+                                .addComponent(jLabel3)
+                                .addGap(217, 217, 217)
+                                .addComponent(jLabel4)
+                                .addGap(237, 237, 237)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(78, 78, 78)
+                                        .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(147, 147, 147)
+                                .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(135, 135, 135)
+                                .addComponent(cbNuevaCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 158, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(84, 84, 84)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel1)))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68)
+                    .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNuevaCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(95, 95, 95)
                 .addComponent(btnActualizar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addComponent(jLabel12)
                 .addContainerGap())
         );
@@ -160,73 +170,72 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         // Obtener datos
-        String guia
-                = txtGuia.getText().trim();
+      String guia = txtGuia.getText().trim();
+    String nuevoEstado = cbNuevoEstado.getSelectedItem().toString();
+    String nuevaCiudad = cbNuevaCiudad.getSelectedItem().toString();
 
-        String nuevoEstado
-                = cbNuevoEstado.getSelectedItem().toString();
+    if (guia.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese una guía.");
+        return;
+    }
 
+    if (nuevoEstado.equals("Seleccionar...")) {
+        JOptionPane.showMessageDialog(this, "Seleccione un estado.");
+        return;
+    }
 
-// Validaciones
-        if (guia.isEmpty()) {
+if (nuevaCiudad.equals("Seleccionar...") || nuevaCiudad.equals("Digite una guía primero...") || nuevaCiudad.equals("Guía no encontrada")) {
+    JOptionPane.showMessageDialog(this, "Seleccione una ubicación válida cargada desde la guía.");
+    return;
+}
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Ingrese una guía."
-            );
+    boolean actualizado = paqueteControl.actualizarEstadoPaquete(guia, nuevoEstado, nuevaCiudad);
 
-            return;
-        }
-
-        if (nuevoEstado.equals("Seleccionar...")) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Seleccione un estado."
-            );
-
-            return;
-        }
-
-
-// Actualizar en BD
-        boolean actualizado
-                = paqueteControl.actualizarEstadoPaquete(
-                        guia,
-                        nuevoEstado
-                        
-                );
-
-// Resultado
-        if (actualizado) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Estado actualizado correctamente."
-            );
-
-            limpiarCampos();
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No se encontró paquete con ésta guía."
-            );
-        }
+    if (actualizado) {
+        JOptionPane.showMessageDialog(this, "Estado y ubicación actualizados correctamente.");
+        limpiarCampos();
+    } else {
+        JOptionPane.showMessageDialog(this, "No se encontró paquete con esta guía.");
+    }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void txtGuiaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGuiaKeyReleased
-        // TODO add your handling code here:
+       String guia = txtGuia.getText().trim();
+
+    if (guia.isEmpty()) {
+        cbNuevaCiudad.removeAllItems();
+        cbNuevaCiudad.addItem("Digite una guía primero...");
+    } else {
+        cbNuevaCiudad.removeAllItems();
+        cbNuevaCiudad.addItem("Seleccionar...");
+        
+        if (guia.length() >= 4) { 
+            modelo.Paquete p = paqueteControl.buscarPaquetePorGuia(guia);
+            
+            if (p != null) {
+                cbNuevaCiudad.addItem(p.getCiudadOrigen());
+                if (!p.getCiudadOrigen().equalsIgnoreCase(p.getCiudadDestino())) {
+                    cbNuevaCiudad.addItem(p.getCiudadDestino());
+                }
+            } else {
+                cbNuevaCiudad.removeAllItems();
+                cbNuevaCiudad.addItem("Guía no encontrada");
+            }
+        }
+    }
+        
+// TODO add your handling code here:
     }//GEN-LAST:event_txtGuiaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JComboBox<String> cbNuevaCiudad;
     private javax.swing.JComboBox<String> cbNuevoEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtGuia;

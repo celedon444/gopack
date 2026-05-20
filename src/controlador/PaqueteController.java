@@ -194,10 +194,9 @@
         }
 
 
-public boolean actualizarEstadoPaquete(String guia, String nuevoEstado) {
-        PaqueteDAO dao = new PaqueteDAO();
-        return dao.actualizarEstado(guia, nuevoEstado);
-    }
+public boolean actualizarEstadoPaquete(String guia, String nuevoEstado, String nuevaUbicacion) {
+   return dao.actualizarEstado(guia, nuevoEstado, nuevaUbicacion);
+}
 
 
         public boolean existeGuia(String guia) { // validamos si la guia existe

@@ -93,35 +93,31 @@ public class PaqueteDAO {
         return null;
     }
 
-    public boolean actualizarEstado(String guia, String nuevoEstado) {
-        // 1. Buscamos el paquete para saber cuál era su ciudad de destino
-        Paquete paquete = buscarPorGuia(guia);
-        if (paquete == null) {
-            System.out.println("No se encontró el paquete para actualizar estado.");
-            return false;
-        }
-        
-        String destino = paquete.getCiudadDestino();
-
-        // 2. Actualizamos el estado, y la ubicación pasa a ser el destino automáticamente
-        String sql = "UPDATE paquetes "
-                + "SET estado = ?, ubicacion_actual = ? "
-                + "WHERE guia_rastreo = ?";
-
-        try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, nuevoEstado);
-            ps.setString(2, destino); // Se asigna automáticamente la ciudad de destino
-            ps.setString(3, guia);
-
-            int resultado = ps.executeUpdate();
-            return resultado > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Error actualizar estado: " + e.getMessage());
-            return false;
-        }
+public boolean actualizarEstado(String guia, String nuevoEstado, String nuevaUbicacion) {
+    Paquete paquete = buscarPorGuia(guia);
+    if (paquete == null) {
+        System.out.println("No se encontró el paquete para actualizar estado.");
+        return false;
     }
+    
+    String sql = "UPDATE paquetes "
+            + "SET estado = ?, ubicacion_actual = ? "
+            + "WHERE guia_rastreo = ?";
+
+    try (Connection con = ConexionBD.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, nuevoEstado);
+        ps.setString(2, nuevaUbicacion); // Guardamos la ciudad real seleccionada en la vista
+        ps.setString(3, guia);
+
+        int resultado = ps.executeUpdate();
+        return resultado > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error actualizar estado: " + e.getMessage());
+        return false;
+    }
+}
 
     public boolean existeGuia(String guia) {
 
