@@ -53,7 +53,17 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         tblGestionReportes.clearSelection();
 
         cbEstadoReporte.setSelectedIndex(0);
+        ocultarColumnaId();
     }
+    private void ocultarColumnaId() {
+    // Verificamos que la tabla tenga al menos una columna para evitar errores
+    if (tblGestionReportes.getColumnCount() > 0) {
+        // La columna 0 es el ID. Modificamos su ancho visual a 0.
+        tblGestionReportes.getColumnModel().getColumn(0).setMinWidth(0);
+        tblGestionReportes.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblGestionReportes.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -73,6 +83,7 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         btnActualizarEstadoReporte = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -113,7 +124,6 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         cbEstadoReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "Pendiente", "En Revisión", "Resuelto" }));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Estado de reporte:");
 
         btnActualizarEstadoReporte.setBackground(new java.awt.Color(0, 153, 0));
@@ -123,8 +133,13 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         btnActualizarEstadoReporte.addActionListener(this::btnActualizarEstadoReporteActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Seleccione un reporte de la tabla para actualizar su estado");
+
+        jButton1.setBackground(new java.awt.Color(0, 102, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Ver evidencia");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,8 +170,10 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cbEstadoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(52, 52, 52)
-                                .addComponent(btnActualizarEstadoReporte)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(btnActualizarEstadoReporte)
+                                .addGap(32, 32, 32)
+                                .addComponent(jButton1)))
+                        .addGap(0, 584, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,7 +192,8 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbEstadoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizarEstadoReporte))
+                    .addComponent(btnActualizarEstadoReporte)
+                    .addComponent(jButton1))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -235,12 +253,46 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
                     "Error al actualizar."
             );
         }
+    
     }//GEN-LAST:event_btnActualizarEstadoReporteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        int filaSeleccionada = tblGestionReportes.getSelectedRow();
+    
+    // 2. Si no ha seleccionado ninguna fila, le avisamos
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un reporte de la tabla primero.");
+        return;
+    }
+    
+    // 3. Obtenemos el valor de la columna "Guía". 
+    // OJO: Cambia el número 1 por la posición exacta de la columna Guía en tu tabla (empezando desde 0).
+    // Según tu imagen: ID es 0, Guía es 1.
+    String guia = tblGestionReportes.getValueAt(filaSeleccionada, 1).toString();
+    
+    // 4. Abrimos la ventana interna mandándole la guía que capturamos
+    javax.swing.JDesktopPane desktopPane = this.getDesktopPane();
+    if (desktopPane != null) {
+        // Pasamos la variable 'guia' dentro del paréntesis
+        VtnVerEvidencia vtn = new VtnVerEvidencia(guia);
+        
+        desktopPane.add(vtn);
+        vtn.setVisible(true);
+        try {
+            vtn.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            System.out.println("Error al enfocar: " + e.getMessage());
+            }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEstadoReporte;
     private javax.swing.JComboBox<String> cbEstadoReporte;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

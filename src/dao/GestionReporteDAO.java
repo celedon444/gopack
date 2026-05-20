@@ -154,4 +154,21 @@ public class GestionReporteDAO {
             return false;
         }
     }
+    public String obtenerArchivoPorGuia(String javaGuia) {
+        String sql = "SELECT ruta_evidencia FROM reportes WHERE guia_paquete = ? ORDER BY id_reporte DESC LIMIT 1";
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, javaGuia);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("ruta_evidencia"); 
+            }
+        } catch (Exception e) {
+            System.out.println("Error en DAO al obtener la ruta de la evidencia: " + e);
+        } finally {
+            try { if (rs != null) rs.close(); if (ps != null) ps.close(); } catch (Exception e) {}
+        }
+        return null;
+    }
 }

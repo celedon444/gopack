@@ -6,6 +6,7 @@ package vista;
 
 import dao.SolicitudEnvioDAO;
 import controlador.PaqueteController;
+import java.util.ArrayList;
 import render.RenderEstadoSolicitudes;
 
 /**
@@ -14,6 +15,7 @@ import render.RenderEstadoSolicitudes;
  */
 public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
 
+    private ArrayList<Integer> listaIdsOcultos = new ArrayList<>();
     /**
      * Creates new form GestionSolicitudes
      */
@@ -22,96 +24,87 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
         cargarSolicitudes();
     }
 
-    public void cargarSolicitudes() {
+public void cargarSolicitudes() {
 
-        try {
+    try {
+        // Limpiamos la lista cada vez que se recargan los datos
+        listaIdsOcultos.clear();
 
-            // =====================================================
-            // CREAR OBJETO DAO
-            // =====================================================
-            dao.SolicitudEnvioDAO dao
-                    = new dao.SolicitudEnvioDAO();
+        // =====================================================
+        // CREAR OBJETO DAO
+        // =====================================================
+        dao.SolicitudEnvioDAO dao = new dao.SolicitudEnvioDAO();
 
-            // =====================================================
-            // OBTENER RESULTADOS DE MYSQL
-            // =====================================================
-            java.sql.ResultSet rs
-                    = dao.listarSolicitudes();
+        // =====================================================
+        // OBTENER RESULTADOS DE MYSQL
+        // =====================================================
+        java.sql.ResultSet rs = dao.listarSolicitudes();
 
-            // =====================================================
-            // MODELO DE LA TABLA
-            // =====================================================
-            javax.swing.table.DefaultTableModel modelo
-                    = new javax.swing.table.DefaultTableModel() {
+        // =====================================================
+        // MODELO DE LA TABLA
+        // =====================================================
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel() {
 
-                @Override
-                public boolean isCellEditable(
-                        int row,
-                        int column
-                ) {
-
-                    return false;
-                }
-            };
-
-            // =====================================================
-            // CREAR COLUMNAS
-            // =====================================================
-            modelo.addColumn("ID");
-            modelo.addColumn("Guía");
-            modelo.addColumn("Remitente");
-            modelo.addColumn("Destinatario");
-            modelo.addColumn("Origen");
-            modelo.addColumn("Destino");
-            modelo.addColumn("Dirección");
-            modelo.addColumn("Peso(Kg)");
-            modelo.addColumn("Tipo");
-            modelo.addColumn("Estado");
-            modelo.addColumn("Fecha");
-
-            // =====================================================
-            // RECORRER RESULTADOS DE MYSQL
-            // =====================================================
-            while (rs.next()) {
-
-                modelo.addRow(new Object[]{
-                    rs.getInt("id_solicitud"),
-                    rs.getString("guia"),
-                    rs.getString("remitente"),
-                    rs.getString("destinatario"),
-                    rs.getString("ciudad_origen"),
-                    rs.getString("ciudad_destino"),
-                    rs.getString("direccion_entrega"),
-                    rs.getDouble("peso"),
-                    rs.getString("tipo_envio"),
-                    rs.getString("estado"),
-                    rs.getTimestamp("fecha_registro")
-                });
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
+        };
 
-            // =====================================================
-            // PONER DATOS EN LA TABLA
-            // =====================================================
-            tablaSolicitudes.setModel(modelo);
+        // =====================================================
+        // CREAR COLUMNAS (QUITAMOS EL ID DE AQUÍ)
+        // =====================================================
+        modelo.addColumn("Guía");
+        modelo.addColumn("Remitente");
+        modelo.addColumn("Destinatario");
+        modelo.addColumn("Origen");
+        modelo.addColumn("Destino");
+        modelo.addColumn("Dirección");
+        modelo.addColumn("Peso(Kg)");
+        modelo.addColumn("Tipo");
+        modelo.addColumn("Estado");
+        modelo.addColumn("Fecha");
 
-            // =====================================================
-// APLICAR COLORES A LA COLUMNA ESTADO
-// =====================================================
-            tablaSolicitudes
-                    .getColumnModel()
-                    .getColumn(9)
-                    .setCellRenderer(
-                            new RenderEstadoSolicitudes()
-                    );
+        // =====================================================
+        // RECORRER RESULTADOS DE MYSQL
+        // =====================================================
+        while (rs.next()) {
+            // Guardamos el ID en nuestra lista oculta (mismo orden que las filas)
+            listaIdsOcultos.add(rs.getInt("id_solicitud"));
 
-        } catch (Exception e) {
-
-            System.out.println(
-                    "Error cargar solicitudes: "
-                    + e.getMessage()
-            );
+            // Añadimos a la tabla solo lo que queremos que el usuario vea
+            modelo.addRow(new Object[]{
+                rs.getString("guia"),
+                rs.getString("remitente"),
+                rs.getString("destinatario"),
+                rs.getString("ciudad_origen"),
+                rs.getString("ciudad_destino"),
+                rs.getString("direccion_entrega"),
+                rs.getDouble("peso"),
+                rs.getString("tipo_envio"),
+                rs.getString("estado"),
+                rs.getTimestamp("fecha_registro")
+            });
         }
+
+        // =====================================================
+        // PONER DATOS EN LA TABLA
+        // =====================================================
+        tablaSolicitudes.setModel(modelo);
+
+        // =====================================================
+        // APLICAR COLORES A LA COLUMNA ESTADO
+        // Nota: Al no tener la columna ID, "Estado" es fijamente la columna 8
+        // =====================================================
+        tablaSolicitudes
+                .getColumnModel()
+                .getColumn(8) 
+                .setCellRenderer(new RenderEstadoSolicitudes());
+
+    } catch (Exception e) {
+        System.out.println("Error cargar solicitudes: " + e.getMessage());
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,13 +131,13 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
 
         tablaSolicitudes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Remitente", "Destinatario", "Ciudad origen", "Ciudad destino", "Dirección", "Peso(Kg)", "Tipo envío", "Estado", "Fecha"
+                "Remitente", "Destinatario", "Ciudad origen", "Ciudad destino", "Dirección", "Peso(Kg)", "Tipo envío", "Estado", "Fecha"
             }
         ));
         jScrollPane1.setViewportView(tablaSolicitudes);
@@ -218,278 +211,123 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-        // =====================================================
-        // OBTENER FILA SELECCIONADA
-        // =====================================================
-        int fila = tablaSolicitudes.getSelectedRow();
+int fila = tablaSolicitudes.getSelectedRow();
 
-        // =====================================================
-        // VALIDAR SI NO SE SELECCIONÓ NADA
-        // =====================================================
-        if (fila == -1) {
+    if (fila == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una solicitud");
+        return;
+    }
 
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Seleccione una solicitud"
-            );
+    // Sin la columna ID, el Estado se movió al índice 8
+    String estado = tablaSolicitudes.getValueAt(fila, 8).toString();
 
-            return;
-        }
+    if (estado.equals("ACEPTADA")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Esta solicitud ya fue aceptada");
+        return;
+    }
 
-        // =====================================================
-        // OBTENER ESTADO ACTUAL
-        // =====================================================
-        String estado = tablaSolicitudes
-                .getValueAt(fila, 9)
-                .toString();
+    if (estado.equals("RECHAZADA")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No puedes aceptar una solicitud rechazada");
+        return;
+    }
 
-        // =====================================================
-        // VALIDAR SI YA FUE ACEPTADA
-        // =====================================================
-        if (estado.equals("ACEPTADA")) {
+    // =====================================================
+    // OBTENER ID DESDE EL ARRAYLIST OCULTO
+    // =====================================================
+    int idSolicitud = listaIdsOcultos.get(fila);
 
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Esta solicitud ya fue aceptada"
-            );
+    SolicitudEnvioDAO dao = new SolicitudEnvioDAO();
+    String guia = dao.generarGuia();
 
-            return;
-        }
+    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            "¿Aceptar esta solicitud?",
+            "Confirmar",
+            javax.swing.JOptionPane.YES_NO_OPTION
+    );
 
-        if (estado.equals("RECHAZADA")) {
+    if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+        return;
+    }
 
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "No puedes aceptar una solicitud rechazada"
-            );
+    boolean resultado = dao.aceptarSolicitud(idSolicitud, guia);
 
-            return;
-        }
+    if (resultado) {
+        // Reajustamos los índices de las columnas porque ya no existe el ID en la tabla
+        String remitente = tablaSolicitudes.getValueAt(fila, 1).toString();
+        String destinatario = tablaSolicitudes.getValueAt(fila, 2).toString();
+        String ciudadOrigen = tablaSolicitudes.getValueAt(fila, 3).toString();
+        String ciudadDestino = tablaSolicitudes.getValueAt(fila, 4).toString();
+        String direccion = tablaSolicitudes.getValueAt(fila, 5).toString();
+        String peso = tablaSolicitudes.getValueAt(fila, 6).toString();
+        String tipo = tablaSolicitudes.getValueAt(fila, 7).toString();
 
-        // =====================================================
-        // OBTENER ID DE LA SOLICITUD
-        // =====================================================
-        int idSolicitud = Integer.parseInt(
-                tablaSolicitudes
-                        .getValueAt(fila, 0)
-                        .toString()
+        controlador.PaqueteController paqueteController = new controlador.PaqueteController();
+
+        paqueteController.guardarPaquete(
+                guia,
+                remitente,
+                destinatario,
+                direccion,
+                peso,
+                tipo,
+                ciudadOrigen,
+                ciudadDestino
         );
 
-        // =====================================================
-        // CREAR OBJETO DAO
-        // =====================================================
-        SolicitudEnvioDAO dao = new SolicitudEnvioDAO();
-
-        // =====================================================
-        // GENERAR GUÍA
-        // =====================================================
-        String guia = dao.generarGuia();
-
-        // =====================================================
-// CONFIRMAR ACEPTACIÓN
-// =====================================================
-        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
-                this,
-                "¿Aceptar esta solicitud?",
-                "Confirmar",
-                javax.swing.JOptionPane.YES_NO_OPTION
-        );
-
-// =====================================================
-// SI EL ADMIN CANCELA
-// =====================================================
-        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
-
-            return;
-        }
-
-        // =====================================================
-        // ACTUALIZAR SOLICITUD EN MYSQL
-        // =====================================================
-        boolean resultado = dao.aceptarSolicitud(
-                idSolicitud,
-                guia
-        );
-
-        // =====================================================
-        // VALIDAR SI TODO SALIÓ BIEN
-        // =====================================================
-        if (resultado) {
-
-            // =====================================================
-// OBTENER DATOS DE LA TABLA
-// =====================================================
-            String remitente = tablaSolicitudes
-                    .getValueAt(fila, 2)
-                    .toString();
-
-            String destinatario = tablaSolicitudes
-                    .getValueAt(fila, 3)
-                    .toString();
-
-            String ciudadOrigen = tablaSolicitudes
-                    .getValueAt(fila, 4)
-                    .toString();
-
-            String ciudadDestino = tablaSolicitudes
-                    .getValueAt(fila, 5)
-                    .toString();
-
-            String direccion = tablaSolicitudes
-                    .getValueAt(fila, 6)
-                    .toString();
-
-            String peso = tablaSolicitudes
-                    .getValueAt(fila, 7)
-                    .toString();
-
-            String tipo = tablaSolicitudes
-                    .getValueAt(fila, 8)
-                    .toString();
-
-            // =====================================================
-            // CREAR CONTROLADOR DE PAQUETES
-            // =====================================================
-            controlador.PaqueteController paqueteController
-                    = new controlador.PaqueteController();
-
-            
-            // =====================================================
-            // REGISTRAR PAQUETE AUTOMÁTICAMENTE
-            // =====================================================
-            paqueteController.guardarPaquete(
-                    guia,
-                    remitente,
-                    destinatario,
-                    direccion,
-                    peso,
-                    tipo,
-                    ciudadOrigen,
-                    ciudadDestino
-            );
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Solicitud aceptada\nGuía: " + guia
-            );
-
-            // =====================================================
-            // RECARGAR TABLA
-            // =====================================================
-            cargarSolicitudes();
-        }
+        javax.swing.JOptionPane.showMessageDialog(this, "Solicitud aceptada\nGuía: " + guia);
+        cargarSolicitudes();
+    }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 
     private void btnRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechazarActionPerformed
         // TODO add your handling code here:
 
-        // =====================================================
-        // OBTENER FILA SELECCIONADA
-        // =====================================================
         int fila = tablaSolicitudes.getSelectedRow();
 
-        // =====================================================
-        // VALIDAR SI NO SE SELECCIONÓ NADA
-        // =====================================================
-        if (fila == -1) {
+    if (fila == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una solicitud");
+        return;
+    }
 
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Seleccione una solicitud"
+    // El Estado está en el índice 8
+    String estado = tablaSolicitudes.getValueAt(fila, 8).toString();
+
+    if (estado.equals("RECHAZADA")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Esta solicitud ya fue rechazada");
+        return;
+    }
+
+    if (estado.equals("ACEPTADA")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No puedes rechazar una solicitud aceptada");
+        return;
+    }
+
+    // =====================================================
+    // OBTENER ID DESDE EL ARRAYLIST OCULTO
+    // =====================================================
+    int idSolicitud = listaIdsOcultos.get(fila);
+
+    SolicitudEnvioDAO dao = new SolicitudEnvioDAO();
+
+    int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            "¿Rechazar esta solicitud?",
+            "Confirmar",
+            javax.swing.JOptionPane.YES_NO_OPTION
             );
 
-            return;
-        }
+    if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
+        return;
+    }
 
-        // =====================================================
-        // OBTENER ESTADO ACTUAL
-        // =====================================================
-        String estado = tablaSolicitudes
-                .getValueAt(fila, 9)
-                .toString();
+    boolean resultado = dao.rechazarSolicitud(idSolicitud);
 
-        // =====================================================
-        // VALIDAR SI YA ESTÁ RECHAZADA
-        // =====================================================
-        if (estado.equals("RECHAZADA")) {
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Esta solicitud ya fue rechazada"
-            );
-
-            return;
-        }
-
-        // =====================================================
-        // VALIDAR SI YA ESTÁ ACEPTADA
-        // =====================================================
-        if (estado.equals("ACEPTADA")) {
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "No puedes rechazar una solicitud aceptada"
-            );
-
-            return;
-        }
-
-        // =====================================================
-        // OBTENER ID DE LA SOLICITUD
-        // =====================================================
-        int idSolicitud = Integer.parseInt(
-                tablaSolicitudes
-                        .getValueAt(fila, 0)
-                        .toString()
-        );
-
-        // =====================================================
-        // CREAR OBJETO DAO
-        // =====================================================
-        SolicitudEnvioDAO dao
-                = new SolicitudEnvioDAO();
-
-        // =====================================================
-// CONFIRMAR RECHAZO
-// =====================================================
-        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
-                this,
-                "¿Rechazar esta solicitud?",
-                "Confirmar",
-                javax.swing.JOptionPane.YES_NO_OPTION
-        );
-
-// =====================================================
-// SI EL ADMIN CANCELA
-// =====================================================
-        if (confirmacion != javax.swing.JOptionPane.YES_OPTION) {
-
-            return;
-        }
-
-        // =====================================================
-        // RECHAZAR SOLICITUD
-        // =====================================================
-        boolean resultado
-                = dao.rechazarSolicitud(idSolicitud);
-
-        // =====================================================
-        // VALIDAR RESULTADO
-        // =====================================================
-        if (resultado) {
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Solicitud rechazada"
-            );
-
-            // =====================================================
-            // RECARGAR TABLA
-            // =====================================================
-            cargarSolicitudes();
-        }
+    if (resultado) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Solicitud rechazada");
+        cargarSolicitudes();
+    }
     }//GEN-LAST:event_btnRechazarActionPerformed
 
 

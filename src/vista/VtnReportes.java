@@ -275,25 +275,58 @@ public class VtnReportes extends javax.swing.JInternalFrame {
         lblPrevisualizacion.setText("");
     }
 
-    private void guardarReportes() {
-        try (Connection con = DriverManager.getConnection(info.getUrl(), info.getUsername(), info.getPassword())) {
-            String ruta = null;
+private void guardarReportes() {
+    String nombreFinalImagen = null;
 
-            if (archivoSeleccionado != null) {
-                ruta = archivoSeleccionado.getAbsolutePath();
+    if (archivoSeleccionado != null) {
+        try {
+            // 1. Validar o crear la carpeta física dentro de tu proyecto
+            File carpetaEvidencias = new File("src/recursos/evidencias");
+            if (!carpetaEvidencias.exists()) {
+                carpetaEvidencias.mkdirs();
             }
 
-            PreparedStatement prm = con.prepareStatement("CALL insertar_reporte(?, ?, ?, ?)");
-            prm.setString(1, txtGuia.getText());
-            prm.setString(2, cbMotivoReporte.getSelectedItem().toString());
-            prm.setString(3, txtaDescripcion.getText());
-            prm.setString(4, ruta);
-            prm.execute();
+            // 2. Generar un nombre único con el Timestamp actual para evitar duplicados
+            long timestamp = System.currentTimeMillis();
+            String nombreOriginal = archivoSeleccionado.getName();
+            String extension = nombreOriginal.substring(nombreOriginal.lastIndexOf("."));
+            
+            // Ejemplo de resultado: "evidencia_1777278822543.jpg"
+            nombreFinalImagen = "evidencia_" + timestamp + extension;
+
+            // 3. Copiar físicamente el archivo del usuario a la carpeta del proyecto
+            File archivoDestino = new File(carpetaEvidencias, nombreFinalImagen);
+            java.nio.file.Files.copy(
+                archivoSeleccionado.toPath(), 
+                archivoDestino.toPath(), 
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING
+            );
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Error: " + e.toString());
+            JOptionPane.showMessageDialog(this, "Error al procesar y guardar la imagen física: " + e.getMessage());
+            return; 
         }
     }
+
+    // 4. Guardar en la Base de Datos llamando a tu procedimiento almacenado
+    try (Connection con = conexion.ConexionBD.conectar()) {
+        String sql = "CALL insertar_reporte(?, ?, ?, ?)";
+        try (PreparedStatement prm = con.prepareStatement(sql)) {
+            prm.setString(1, txtGuia.getText().trim());
+            prm.setString(2, cbMotivoReporte.getSelectedItem().toString());
+            prm.setString(3, txtaDescripcion.getText().trim());
+            prm.setString(4, nombreFinalImagen); // Se guarda el nombre corto limpio
+            
+            prm.execute();
+        }
+
+        JOptionPane.showMessageDialog(this, "Reporte enviado correctamente.");
+        limpiarFormulario();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error en Base de Datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
 
     private void btnEnviarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarReporteActionPerformed

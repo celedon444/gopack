@@ -19,7 +19,6 @@ public class VtnSolicitudEnvio extends javax.swing.JInternalFrame {
     private void limpiarCampos() {
 
         // LIMPIAR CAJAS DE TEXTO
-        txtRemitente.setText("");
 
         txtDestinatario.setText("");
 
@@ -38,10 +37,11 @@ public class VtnSolicitudEnvio extends javax.swing.JInternalFrame {
     /**
      * Creates new form VtnSolicitudEnvio
      */
-    public VtnSolicitudEnvio() {
+    public VtnSolicitudEnvio(String nombreUsuario) {
         initComponents();
         limpiarCampos();
-
+        txtRemitente.setText(nombreUsuario);
+        txtRemitente.setEditable(false);
     }
 
     /**

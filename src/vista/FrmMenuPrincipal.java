@@ -332,7 +332,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         // Si NO existe, la creamos
         VtnSolicitudEnvio ventana
-                = new VtnSolicitudEnvio();
+                = new VtnSolicitudEnvio(this.nombre);
 
         // La agregamos al contenedor principal
         desktopContenedor.add(ventana);

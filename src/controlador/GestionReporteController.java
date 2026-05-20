@@ -84,5 +84,8 @@ public class GestionReporteController {
 
         return dao.existeReporteActivo(guia);
     }
+    public String obtenerNombreEvidencia(String guia) {
+        return dao.obtenerArchivoPorGuia(guia); // Asegúrate de usar la variable de tu DAO (ej: 'dao' o 'grDao')
+    }
 
 }

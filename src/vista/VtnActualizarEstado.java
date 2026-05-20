@@ -34,41 +34,13 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
                 )
         );
 
-// Combo de ciudades
-        cbNuevaUbicacion.setModel(
-                new javax.swing.DefaultComboBoxModel<>(
-                        new String[]{
-                            "Seleccionar...",
-                            "Armenia",
-                            "Barranquilla",
-                            "Bogotá",
-                            "Bucaramanga",
-                            "Cali",
-                            "Cartagena",
-                            "Cúcuta",
-                            "Ibagué",
-                            "Manizales",
-                            "Medellín",
-                            "Montería",
-                            "Neiva",
-                            "Pasto",
-                            "Pereira",
-                            "Popayán",
-                            "Santa Marta",
-                            "Sincelejo",
-                            "Tunja",
-                            "Valledupar",
-                            "Villavicencio"
-                        }
-                )
-        );
+
          limpiarCampos();
     }
 
     private void limpiarCampos() {
         txtGuia.setText("");
         cbNuevoEstado.setSelectedIndex(0);
-        cbNuevaUbicacion.setSelectedIndex(0);
     }
 
     /**
@@ -82,12 +54,10 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txtGuia = new javax.swing.JTextField();
-        cbNuevaUbicacion = new javax.swing.JComboBox<>();
         cbNuevoEstado = new javax.swing.JComboBox<>();
         btnActualizar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
@@ -108,8 +78,6 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
             }
         });
 
-        cbNuevaUbicacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         cbNuevoEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnActualizar.setBackground(new java.awt.Color(0, 153, 0));
@@ -123,9 +91,6 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Nuevo estado:");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("Nueva ciudad:");
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/logo.png"))); // NOI18N
         jLabel13.setText("jLabel5");
@@ -147,20 +112,22 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
                 .addComponent(jLabel12)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
+                .addGap(305, 305, 305)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(285, 285, 285))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(117, 117, 117)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(115, 115, 115)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(cbNuevaUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(199, 199, 199)
+                        .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(221, 221, 221))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnActualizar)
+                        .addGap(296, 296, 296))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,21 +139,17 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(94, 94, 94)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbNuevaUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(113, 113, 113))
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addGap(84, 84, 84)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbNuevoEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGuia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(68, 68, 68)
+                .addComponent(btnActualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(jLabel12)
                 .addContainerGap())
         );
@@ -203,8 +166,6 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
         String nuevoEstado
                 = cbNuevoEstado.getSelectedItem().toString();
 
-        String nuevaUbicacion
-                = cbNuevaUbicacion.getSelectedItem().toString();
 
 // Validaciones
         if (guia.isEmpty()) {
@@ -227,22 +188,13 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
             return;
         }
 
-        if (nuevaUbicacion.equals("Seleccionar...")) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Seleccione una ciudad."
-            );
-
-            return;
-        }
 
 // Actualizar en BD
         boolean actualizado
                 = paqueteControl.actualizarEstadoPaquete(
                         guia,
-                        nuevoEstado,
-                        nuevaUbicacion
+                        nuevoEstado
+                        
                 );
 
 // Resultado
@@ -271,14 +223,12 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
-    private javax.swing.JComboBox<String> cbNuevaUbicacion;
     private javax.swing.JComboBox<String> cbNuevoEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField txtGuia;
     // End of variables declaration//GEN-END:variables
 }
