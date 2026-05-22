@@ -203,7 +203,7 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
         }
 
 
-        String estado = tablaSolicitudes.getValueAt(fila, 8).toString();
+        String estado = tablaSolicitudes.getValueAt(fila, 9).toString();
 
         if (estado.equals("ACEPTADA")) {
             javax.swing.JOptionPane.showMessageDialog(this, "Esta solicitud ya fue aceptada");

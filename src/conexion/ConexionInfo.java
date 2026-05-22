@@ -12,7 +12,7 @@ public class ConexionInfo {
     
      private String url = "jdbc:mysql://localhost:3306/sistema_logistica";
     private String username = "root";
-    private String password = "cbn2016";
+    private String password = "MyNewPass1";
 
     public String getUrl() {
         return url;

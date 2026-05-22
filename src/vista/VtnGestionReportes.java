@@ -21,6 +21,7 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
      */
     public VtnGestionReportes() {
         initComponents();
+        configurarSeleccionTabla();
         cargarTabla();
 
         cbEstadoReporte.setModel(
@@ -34,6 +35,24 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
                 )
         );
     }
+    private void configurarSeleccionTabla() {
+    tblGestionReportes.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int fila = tblGestionReportes.getSelectedRow();
+            if (fila != -1) {
+                // Obtenemos el estado de la columna 6 (donde está el texto)
+                String estado = tblGestionReportes.getValueAt(fila, 6).toString();
+                
+                // Aquí controlas el ComboBox de tu vista directamente:
+                if ("Resuelto".equalsIgnoreCase(estado)) {
+                    cbEstadoReporte.setEnabled(false);
+                } else {
+                    cbEstadoReporte.setEnabled(true);
+                }
+            }
+        }
+    });
+}
 
     private void cargarTabla() {
 
@@ -242,7 +261,9 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(
                     this,
                     "Estado actualizado."
+                    
             );
+            
 
             cargarTabla();
 

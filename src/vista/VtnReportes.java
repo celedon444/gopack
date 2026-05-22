@@ -368,11 +368,6 @@ private void guardarReportes() {
             // GUARDAR REPORTE
             guardarReportes();
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Reporte enviado"
-            );
-
             limpiarFormulario();
 
         } else {

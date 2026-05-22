@@ -1,8 +1,7 @@
-CREATE DATABASE IF NOT EXISTS sistema_logistica;
+CREATE DATABASE sistema_logistica;
 USE sistema_logistica;
 
--- 1. TABLAS
-CREATE TABLE IF NOT EXISTS usuarios (
+CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     cedula VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100),
@@ -12,7 +11,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS reportes (
+CREATE TABLE reportes (
     id_reporte INT AUTO_INCREMENT PRIMARY KEY,
     guia_paquete VARCHAR(20) NOT NULL,
     motivo VARCHAR(900) NOT NULL,
@@ -22,7 +21,7 @@ CREATE TABLE IF NOT EXISTS reportes (
     estado ENUM('Pendiente', 'En Revisión', 'Resuelto') DEFAULT 'Pendiente'
 );
 
-CREATE TABLE IF NOT EXISTS auditoria_usuarios (
+CREATE TABLE auditoria_usuarios (
     id_log INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario_afectado INT,
     username_afectado VARCHAR(100),
@@ -31,7 +30,7 @@ CREATE TABLE IF NOT EXISTS auditoria_usuarios (
     fecha_cambio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS paquetes (
+CREATE TABLE paquetes (
     id_paquete INT AUTO_INCREMENT PRIMARY KEY,
     guia_rastreo VARCHAR(20) UNIQUE NOT NULL,
     ciudad_origen VARCHAR(100),
@@ -47,7 +46,7 @@ CREATE TABLE IF NOT EXISTS paquetes (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS solicitudes_envio (
+CREATE TABLE solicitudes_envio (
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
     guia VARCHAR(20),
     remitente VARCHAR(100) NOT NULL,
@@ -62,7 +61,7 @@ CREATE TABLE IF NOT EXISTS solicitudes_envio (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS movimientos_paquete (
+CREATE TABLE movimientos_paquete (
     id_movimiento INT AUTO_INCREMENT PRIMARY KEY,
     guia_rastreo VARCHAR(20),
     estado VARCHAR(50),
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS movimientos_paquete (
     FOREIGN KEY (guia_rastreo) REFERENCES paquetes(guia_rastreo)
 );
 
-CREATE TABLE IF NOT EXISTS pagos (
+CREATE TABLE pagos (
     id_pago INT AUTO_INCREMENT PRIMARY KEY,
     guia_rastreo VARCHAR(20) NOT NULL,
     monto DOUBLE NOT NULL,
@@ -82,14 +81,11 @@ CREATE TABLE IF NOT EXISTS pagos (
     FOREIGN KEY (guia_rastreo) REFERENCES paquetes(guia_rastreo)
 );
 
--- 2. PROCEDIMIENTOS Y TRIGGERS
 DELIMITER //
 
--- Procedimiento corregido para el Login
 DROP PROCEDURE IF EXISTS sp_validar_login //
 CREATE PROCEDURE sp_validar_login(IN p_username VARCHAR(100), IN p_password VARCHAR(255))
 BEGIN
-    -- Ahora devuelve los 3 campos que tu Java espera
     SELECT cedula, nombre, rol 
     FROM usuarios 
     WHERE BINARY username = p_username 
@@ -127,6 +123,5 @@ END //
 
 DELIMITER ;
 
--- 3. INSERTS
 INSERT IGNORE INTO usuarios (cedula, nombre, username, password, rol) 
-VALUES ('12345678', 'Camilo Administrador', '12345678', '123', 'ADMIN');
+VALUES ('12345678', 'Camilo', '12345678', '123', 'ADMIN');

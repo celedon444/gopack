@@ -6,10 +6,14 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+
+
+
 /**
  *
  * @author camil
  */
+   
 
 public class RenderEstadoReportes
         extends DefaultTableCellRenderer {
@@ -51,7 +55,8 @@ public class RenderEstadoReportes
             celda.setBackground(Color.GREEN);
               celda.setForeground(Color.BLACK);
 
-        } else {
+
+        } else { 
 
             celda.setBackground(Color.WHITE);
         }
