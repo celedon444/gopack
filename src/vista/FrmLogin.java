@@ -63,7 +63,13 @@ public class FrmLogin extends javax.swing.JFrame {
         btnIniciarSesion.setText("Iniciar sesión");
         btnIniciarSesion.addActionListener(this::btnIniciarSesionActionPerformed);
 
-        jLabel7.setText("¿Olvidaste tu contraseña?");
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("Registrarse");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -88,15 +94,12 @@ public class FrmLogin extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(130, 130, 130)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(txtUsuario)
-                                        .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel8)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(txtUsuario)
+                                .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(54, 54, 54)
                                 .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -105,6 +108,10 @@ public class FrmLogin extends javax.swing.JFrame {
                                 .addComponent(jLabel1)))
                         .addGap(0, 407, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(426, 426, 426))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,60 +147,63 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
 // TODO add your handling code here:
-        String usuario = txtUsuario.getText();
-        String password = new String(txtContrasena.getPassword());
+// 1. Obtener datos de la interfaz
+    String cedulaIngresada = txtUsuario.getText().trim();
+    String password = new String(txtContrasena.getPassword());
 
-        if (usuario.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor llene todos los campos");
-            return;
+    if (cedulaIngresada.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese su cédula y contraseña.");
+        return;
+    }
+
+    // 2. Definir la consulta al SP
+    String sql = "{CALL sp_validar_login(?, ?)}";
+
+    // 3. Establecer conexión y ejecutar
+    try (Connection con = DriverManager.getConnection(info.getUrl(), info.getUsername(), info.getPassword());
+         java.sql.CallableStatement cs = con.prepareCall(sql)) {
+        
+        cs.setString(1, cedulaIngresada);
+        cs.setString(2, password);
+
+        // AQUÍ ESTABA EL ERROR: Necesitas ejecutar el query para obtener el ResultSet
+        ResultSet rs = cs.executeQuery();
+
+        if (rs.next()) {
+            // Ahora sí, extraemos los datos
+            String cedulaLog = rs.getString("cedula"); 
+            String nombreLog = rs.getString("nombre"); 
+            String rolLog    = rs.getString("rol");
+
+            JOptionPane.showMessageDialog(this, "Bienvenido, " + nombreLog);
+            
+            // Abrir el menú principal
+            FrmMenuPrincipal menu = new FrmMenuPrincipal(cedulaLog, nombreLog, rolLog);
+            menu.setVisible(true);
+            this.dispose();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Cédula o contraseña incorrectos.");
         }
 
-        try (Connection con = DriverManager.getConnection(info.getUrl(),info.getUsername(),info.getPassword())) {
-                    PreparedStatement cs = con.prepareCall("{CALL sp_validar_login(?, ?)}");
-                    cs.setString(1, usuario);
-                    cs.setString(2, password);
-
-            ResultSet rs = cs.executeQuery();
-
-            if (rs.next()) {
-
-                String nombre = rs.getString("username");
-                String rol = rs.getString("rol");
-
-                FrmMenuPrincipal principal = new FrmMenuPrincipal(nombre, rol);
-                principal.setVisible(true);
-                this.dispose();
-
-            } else {
-
-                PreparedStatement csInsert = con.prepareCall("{CALL sp_insertar_usuario(?, ?)}");
-                csInsert.setString(1, usuario);
-                csInsert.setString(2, password);
-                csInsert.execute();
-
-                JOptionPane.showMessageDialog(this, "Usuario registrado");
-
-                String sql = "CALL sp_validar_login(?, ?)";
-                PreparedStatement ps2 = con.prepareStatement(sql);
-                ps2.setString(1, usuario);
-                ps2.setString(2, password);
-                ResultSet rs2 = ps2.executeQuery();
-
-                if (rs2.next()) {
-                    String nombre = rs2.getString("username");
-                    String rol = rs2.getString("rol");
-
-                    FrmMenuPrincipal principal = new FrmMenuPrincipal(nombre, rol);
-                    principal.setVisible(true);
-                    this.dispose();
-                }
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña son incorrectos");
-        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error de conexión: " + e.getMessage());
+        e.printStackTrace();
+    }
 
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+       FrmRegistro registro = new FrmRegistro();
+        
+        // Hacerla visible
+        registro.setVisible(true);
+        
+        // Cerrar o esconder la ventana de login actual
+        this.dispose();
+        
+// TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     public static void main(String args[]) {
 

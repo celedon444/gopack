@@ -15,22 +15,21 @@ public class VtnSolicitudEnvio extends javax.swing.JInternalFrame {
 
     SolicitudEnvioController control
             = new SolicitudEnvioController();
+    private String cedulaGuardada; //
 
-    private void limpiarCampos() {
-
-        // LIMPIAR CAJAS DE TEXTO
+private void limpiarCampos() {
+        // LIMPIAR CAJAS DE TEXTO (excepto el remitente que es fijo)
         txtDestinatario.setText("");
-
         txtDireccion.setText("");
-
         txtPeso.setText("");
 
         // REINICIAR COMBOBOX
         cbCiudadOrigen.setSelectedIndex(0);
-
         cbCiudadDestino.setSelectedIndex(0);
-
         cbTipoEnvio.setSelectedIndex(0);
+        
+        // Opcional: Reiniciar el costo visual
+        lblCostoEnvio.setText("$ 0");
     }
 
     private void calcularCostoEnvio() {
@@ -104,30 +103,34 @@ public class VtnSolicitudEnvio extends javax.swing.JInternalFrame {
     /**
      * Creates new form VtnSolicitudEnvio
      */
-    public VtnSolicitudEnvio(String nombreUsuario) {
+    public VtnSolicitudEnvio(String cedula) {
         initComponents();
-        limpiarCampos();
-        txtRemitente.setText(nombreUsuario);
-        txtRemitente.setEditable(false);
-        cbCiudadOrigen.addActionListener(e -> {
+this.cedulaGuardada = cedula; 
+    
+    // 2. Buscamos el nombre usando el DAO
+    dao.UsuarioDAO uDao = new dao.UsuarioDAO();
+    String nombreReal = uDao.obtenerNombrePorCedula(cedula);
+    
+    // 3. Asignamos el nombre al campo y bloqueamos edición
+    if (nombreReal != null && !nombreReal.trim().isEmpty()) {
+        txtRemitente.setText(nombreReal);
+    } else {
+        txtRemitente.setText(cedula);
+    }
+    txtRemitente.setEditable(false);
+
+    // 4. LIMPIAR CAMPOS AL FINAL (para que el nombre no se borre)
+    limpiarCampos();
+    
+    // 5. listeners...
+    cbCiudadOrigen.addActionListener(e -> calcularCostoEnvio());
+    cbCiudadDestino.addActionListener(e -> calcularCostoEnvio());
+    txtPeso.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyReleased(java.awt.event.KeyEvent evt) {
             calcularCostoEnvio();
-        });
-
-        cbCiudadDestino.addActionListener(e -> {
-            calcularCostoEnvio();
-        });
-
-        txtPeso.addKeyListener(
-                new java.awt.event.KeyAdapter() {
-
-            @Override
-            public void keyReleased(
-                    java.awt.event.KeyEvent evt
-            ) {
-
-                calcularCostoEnvio();
-            }
-        });
+        }
+    });
     }
 
     /**

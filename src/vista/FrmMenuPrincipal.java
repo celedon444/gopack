@@ -11,11 +11,13 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmMenuPrincipal
      */
+    String cedula;
     String nombre;
     String rol;
 
-    public FrmMenuPrincipal(String nombre, String rol) { // <--- Agregamos String nombre aquí
+    public FrmMenuPrincipal(String cedula, String nombre, String rol) { // <--- Agregamos String nombre aquí
         initComponents();
+        this.cedula = cedula;
         this.nombre = nombre;
         this.rol = rol;
 
@@ -331,13 +333,8 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         }
 
         // Si NO existe, la creamos
-        VtnSolicitudEnvio ventana
-                = new VtnSolicitudEnvio(this.nombre);
-
-        // La agregamos al contenedor principal
+VtnSolicitudEnvio ventana = new VtnSolicitudEnvio(this.cedula);
         desktopContenedor.add(ventana);
-
-        // La hacemos visible
         ventana.setVisible(true);
     }//GEN-LAST:event_itemSolicitarEnvioActionPerformed
 
