@@ -29,7 +29,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }
 
     public void validarAdmin() {
-        // SI EL USUARIO NO ES ADMIN
+        // si el usuario no es admin
         if (!rol.equals("ADMIN")) {
 
             // Ocultar opciones solo para ADMIN
@@ -210,12 +210,10 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         );
 
         if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
-            // 2. Crear una nueva instancia de tu ventana de Login
-            // Asegúrate de que el nombre sea exactamente el de tu clase de Login
+            //  aqui se crear una nueva instancia de la ventana de Login
             FrmLogin login = new FrmLogin();
 
-            // 3. Hacer visible el login
-            login.setVisible(true);
+            login.setVisible(true);  // se hace visible el login
 
             // 4. Cerrar (destruir) la ventana actual del Menú Principal
             this.dispose();
@@ -223,7 +221,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
     private void itemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInventarioActionPerformed
-        // 1. Verificamos si ya está abierta
+        // verificamos si ya esta abierta
         for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
             if (frame instanceof VtnInventario) {
                 frame.toFront();
@@ -239,27 +237,27 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSalirActionPerformed
 
-        // Preguntamos antes de cerrar para que no sea un accidente
+        // preguntamos antes de cerrar para que no sea un accidente
         int respuesta = javax.swing.JOptionPane.showConfirmDialog(this,
                 "¿Desea cerrar la aplicación por completo?",
                 "Confirmar salida",
                 javax.swing.JOptionPane.YES_NO_OPTION);
 
         if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
-            System.exit(0); // Esto mata el proceso del programa
+            System.exit(0); // ssto mata el proceso del programa
         }
     }//GEN-LAST:event_itemSalirActionPerformed
 
     private void itemRastreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRastreoActionPerformed
-        // 1. Verificamos si ya está abierta usando el ciclo que ya conoces
+        // 1. Verificamos si ya está abierta usando el ciclo 
         for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
             if (frame instanceof VtnRastreo) {
-                frame.toFront(); // Si existe, la traemos al frente
-                return; // Salimos del método para no crear una nueva
+                frame.toFront(); // si existe, la traemos al frente
+                return; // salimos del metodo para no crear una nueva
             }
         }
 
-        // 2. Si no existe, la creamos
+        // si no existe, la creamos
         VtnRastreo ventanaRastreo = new VtnRastreo();
 
         desktopContenedor.add(ventanaRastreo);
@@ -269,15 +267,15 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReportesActionPerformed
         // TODO add your handling code here:
-        // 1. Verificamos si ya está abierta usando el ciclo que ya conoces
+        // verificamos si ya está abierta usando el ciclo 
         for (javax.swing.JInternalFrame frame : desktopContenedor.getAllFrames()) {
             if (frame instanceof VtnReportes) {
-                frame.toFront(); // Si existe, la traemos al frente
-                return; // Salimos del método para no crear una nueva
+                frame.toFront(); // si existe, la traemos al frente
+                return; // salimos del metodo para no crear una nueva
             }
         }
 
-        // 2. Si no existe, la creamos
+        // si no existe, la creamos
         VtnReportes ventanaReportes = new VtnReportes();
 
         desktopContenedor.add(ventanaReportes);
@@ -318,7 +316,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
     private void itemSolicitarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSolicitarEnvioActionPerformed
         // TODO add your handling code here:
-        // Recorremos todas las ventanas abiertas
+        // recorremos todas las ventanas abiertas
         for (javax.swing.JInternalFrame frame
                 : desktopContenedor.getAllFrames()) {
 
@@ -332,7 +330,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
             }
         }
 
-        // Si NO existe, la creamos
+        // si NO existe, la creamos
 VtnSolicitudEnvio ventana = new VtnSolicitudEnvio(this.cedula);
         desktopContenedor.add(ventana);
         ventana.setVisible(true);
@@ -340,28 +338,28 @@ VtnSolicitudEnvio ventana = new VtnSolicitudEnvio(this.cedula);
 
     private void itemGestionSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionSolicitudesActionPerformed
         // TODO add your handling code here:
-        // Recorremos las ventanas abiertas
+        // recorremos las ventanas abiertas
         for (javax.swing.JInternalFrame frame
                 : desktopContenedor.getAllFrames()) {
 
-            // Si la ventana ya existe
+            // si la ventana ya existe
             if (frame instanceof VtnGestionSolicitudes) {
 
-                // La traemos al frente
+                // la traemos al frente
                 frame.toFront();
 
                 return;
             }
         }
 
-        // Si no existe, la creamos
+        // si no existe, la creamos
         VtnGestionSolicitudes ventana
                 = new VtnGestionSolicitudes();
 
-        // La agregamos al contenedor
+        // la agregamos al contenedor
         desktopContenedor.add(ventana);
 
-        // La mostramos
+        // la mostramos
         ventana.setVisible(true);
     }//GEN-LAST:event_itemGestionSolicitudesActionPerformed
 

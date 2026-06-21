@@ -40,10 +40,10 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         if (!e.getValueIsAdjusting()) {
             int fila = tblGestionReportes.getSelectedRow();
             if (fila != -1) {
-                // Obtenemos el estado de la columna 6 (donde está el texto)
+                // obtenemos el estado de la columna 6 (donde está el texto)
                 String estado = tblGestionReportes.getValueAt(fila, 6).toString();
                 
-                // Aquí controlas el ComboBox de tu vista directamente:
+                // aqui controlamos el combobox de la vista directamente:
                 if ("Resuelto".equalsIgnoreCase(estado)) {
                     cbEstadoReporte.setEnabled(false);
                 } else {
@@ -60,9 +60,7 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
                 control.mostrarReportes()
         );
 
-        // =====================================================
-        // VOLVER A APLICAR RENDERER DE COLORES
-        // =====================================================
+        // aqui aplicamos el render (los colores de las tablas)
         tblGestionReportes.getColumnModel()
                 .getColumn(6)
                 .setCellRenderer(
@@ -75,9 +73,9 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
         ocultarColumnaId();
     }
     private void ocultarColumnaId() {
-    // Verificamos que la tabla tenga al menos una columna para evitar errores
+    // verificamos que la tabla tenga al menos una columna para evitar errores
     if (tblGestionReportes.getColumnCount() > 0) {
-        // La columna 0 es el ID. Modificamos su ancho visual a 0.
+        // la columna 0 es el ID. Modificamos su ancho visual a 0.
         tblGestionReportes.getColumnModel().getColumn(0).setMinWidth(0);
         tblGestionReportes.getColumnModel().getColumn(0).setMaxWidth(0);
         tblGestionReportes.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -281,21 +279,21 @@ public class VtnGestionReportes extends javax.swing.JInternalFrame {
 
         int filaSeleccionada = tblGestionReportes.getSelectedRow();
     
-    // 2. Si no ha seleccionado ninguna fila, le avisamos
+    // si no ha seleccionado ninguna fila, le avisamos
     if (filaSeleccionada == -1) {
         javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un reporte de la tabla primero.");
         return;
     }
     
-    // 3. Obtenemos el valor de la columna "Guía". 
-    // OJO: Cambia el número 1 por la posición exacta de la columna Guía en tu tabla (empezando desde 0).
-    // Según tu imagen: ID es 0, Guía es 1.
+    // obtenemos el valor de la columna "guia". 
+    // OJO: cambia el número 1 por la posición exacta de la columna Guía en tu tabla (empezando desde 0).
+
     String guia = tblGestionReportes.getValueAt(filaSeleccionada, 1).toString();
     
-    // 4. Abrimos la ventana interna mandándole la guía que capturamos
+    // abrimos la ventana interna mandándole la guía que capturamos
     javax.swing.JDesktopPane desktopPane = this.getDesktopPane();
     if (desktopPane != null) {
-        // Pasamos la variable 'guia' dentro del paréntesis
+        // pasamos la variable 'guia' dentro del parentesis
         VtnVerEvidencia vtn = new VtnVerEvidencia(guia);
         
         desktopPane.add(vtn);

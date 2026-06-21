@@ -20,7 +20,7 @@ public class VtnInventario extends javax.swing.JInternalFrame {
 
     public VtnInventario() {
         initComponents();
-        mostrarDatos();  // Cargar datos al abrir
+        mostrarDatos();  // cargar datos al abrir
         Timer timer = new Timer(1000, e -> {  // temporizador que actualiza la tabla 
             mostrarDatos();                    // automáticamente cada 3 segundos
         });

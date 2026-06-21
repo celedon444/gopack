@@ -54,14 +54,12 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
             modelo.addColumn("Estado");
             modelo.addColumn("Fecha");
 
-            // =====================================================
-            // RECORRER RESULTADOS DE MYSQL
-            // =====================================================
+
             while (rs.next()) {
-                // Guardamos el ID en nuestra lista oculta (mismo orden que las filas)
+                // guardamos el ID en nuestra lista oculta (mismo orden que las filas)
                 listaIdsOcultos.add(rs.getInt("id_solicitud"));
 
-                // Añadimos a la tabla solo lo que queremos que el usuario vea
+                // añadimos a la tabla solo lo que queremos que el usuario vea
                 modelo.addRow(new Object[]{
                     rs.getString("guia"),
                     rs.getString("remitente"),
@@ -234,7 +232,7 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
         boolean resultado = dao.aceptarSolicitud(idSolicitud, guia);
 
         if (resultado) {
-            // 1. Extraemos los datos de la fila usando los índices correctos
+            // extraemos los datos de la fila usando los indices correctos
             String remitente = tablaSolicitudes.getValueAt(fila, 1).toString();
             String destinatario = tablaSolicitudes.getValueAt(fila, 2).toString();
             String ciudadOrigen = tablaSolicitudes.getValueAt(fila, 3).toString();
@@ -274,7 +272,7 @@ public class VtnGestionSolicitudes extends javax.swing.JInternalFrame {
             return;
         }
 
-        // El Estado está en el índice 8
+        // el estado esta en el indice 8
         String estado = tablaSolicitudes.getValueAt(fila, 9).toString();
 
         if (estado.equals("RECHAZADA")) {

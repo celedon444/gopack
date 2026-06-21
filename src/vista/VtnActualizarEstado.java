@@ -169,7 +169,7 @@ public class VtnActualizarEstado extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        // Obtener datos
+        // obtener datos
       String guia = txtGuia.getText().trim();
     String nuevoEstado = cbNuevoEstado.getSelectedItem().toString();
     String nuevaCiudad = cbNuevaCiudad.getSelectedItem().toString();

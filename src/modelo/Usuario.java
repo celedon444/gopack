@@ -10,18 +10,18 @@ public class Usuario {
     private String password;
     private String rol; 
 
-    // 1. Constructor vacío (Estándar POJO)
+    // constructor vacio (Estandar POJO)
     public Usuario() {
     }
 
-    // 2. Constructor con parámetros
+    // constructor con parametros
     public Usuario(String nombre, String password, String rol) {
         this.nombre = nombre;
         this.password = password;
         this.rol = rol;
     }
 
-    // 3. Métodos Getter y Setter (Encapsulamiento)
+    // metodos getter y setter (encapsulamiento)
     public String getNombre() {
         return nombre;
     }
@@ -46,7 +46,7 @@ public class Usuario {
         this.rol = rol;
     }
 
-    // 4. Método toString para depuración rápida
+    //  metodo toString para depuracion rapida
     @Override
     public String toString() {
         return "Usuario{" + "nombre=" + nombre + ", rol=" + rol + '}';

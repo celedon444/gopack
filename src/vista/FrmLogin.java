@@ -147,7 +147,8 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
 // TODO add your handling code here:
-// 1. Obtener datos de la interfaz
+
+//  obtener datos de la interfaz
     String cedulaIngresada = txtUsuario.getText().trim();
     String password = new String(txtContrasena.getPassword());
 
@@ -156,28 +157,28 @@ public class FrmLogin extends javax.swing.JFrame {
         return;
     }
 
-    // 2. Definir la consulta al SP
+    //  definir la consulta al SP
     String sql = "{CALL sp_validar_login(?, ?)}";
 
-    // 3. Establecer conexión y ejecutar
+    // establecer conexion y ejecutar
     try (Connection con = DriverManager.getConnection(info.getUrl(), info.getUsername(), info.getPassword());
          java.sql.CallableStatement cs = con.prepareCall(sql)) {
         
         cs.setString(1, cedulaIngresada);
         cs.setString(2, password);
 
-        // AQUÍ ESTABA EL ERROR: Necesitas ejecutar el query para obtener el ResultSet
+        // aqui estaba el error: necesitaba ejecutar el query para obtener el ResultSet
         ResultSet rs = cs.executeQuery();
 
         if (rs.next()) {
-            // Ahora sí, extraemos los datos
+            // extraemos los datos
             String cedulaLog = rs.getString("cedula"); 
             String nombreLog = rs.getString("nombre"); 
             String rolLog    = rs.getString("rol");
 
             JOptionPane.showMessageDialog(this, "Bienvenido, " + nombreLog);
             
-            // Abrir el menú principal
+            // abrir el menú principal
             FrmMenuPrincipal menu = new FrmMenuPrincipal(cedulaLog, nombreLog, rolLog);
             menu.setVisible(true);
             this.dispose();
@@ -196,10 +197,10 @@ public class FrmLogin extends javax.swing.JFrame {
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
        FrmRegistro registro = new FrmRegistro();
         
-        // Hacerla visible
+        // hacer la ventana  visible
         registro.setVisible(true);
         
-        // Cerrar o esconder la ventana de login actual
+        // cerrar o esconder la ventana de login actual
         this.dispose();
         
 // TODO add your handling code here:
