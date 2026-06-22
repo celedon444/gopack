@@ -7,7 +7,7 @@ El sistema permite la gestión de paquetes y envíos, facilitando el registro, c
 
 El proyecto fue diseñado aplicando principios de Programación Orientada a Objetos (POO), arquitectura (MVC) y conexión a base de datos MySQL para la persistencia de la información.
 
-## Capturas
+## Imágenes
 
 ### Solicitud de envío
 
@@ -17,7 +17,7 @@ El proyecto fue diseñado aplicando principios de Programación Orientada a Obje
 
 ![Gestión de Gopack](src/recursos/gopack-gestion.png)
 
-## Tecnologías
+## Tecnologías utilizadas
 
 - Java (Swing / Desktop Application)
 - MySQL
